@@ -19,13 +19,14 @@ class PolyTreeNode
   end
 
   def parent=(node)
+    if @parent
+      old_parent = self.parent
+      old_parent.children.delete(self)
+    end
+    
     if node.nil?
       @parent = nil
     else
-      if @parent
-        old_parent = self.parent
-        old_parent.children.delete(self)
-      end
       @parent = node
       node.children << self unless node.children.include?(self)
     end
@@ -36,14 +37,15 @@ class PolyTreeNode
   end
 
   def remove_child(child_node)
-    child_node.parent = nil
     raise "not a child" if child_node.parent.nil?
+    child_node.parent = nil
+
 
     # self.children.delete(child_node)
   end
 
   def inspect
-    "#{@value}, #{@parent}, #{@children}"
+    "#{@value}"
   end
 
 
