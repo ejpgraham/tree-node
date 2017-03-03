@@ -1,4 +1,5 @@
 require 'byebug'
+
 class PolyTreeNode
   def initialize(value)
     @value = value
@@ -43,7 +44,6 @@ class PolyTreeNode
 
   def dfs(target_value)
     return self if self.value == target_value
-    # debugger
     self.children.each do |child|
       result = child.dfs(target_value)
       return result unless result.nil?
@@ -52,19 +52,19 @@ class PolyTreeNode
     nil
   end
 
-  def inspect
-    "#{@value}"
+  def bfs(target_value)
+    queue = []
+    queue << self
+
+    until queue.empty?
+      current_node = queue.shift
+      return current_node if current_node.value == target_value
+
+      current_node.children.each do |child|
+        queue.push(child)
+      end
+    end
+
+    nil
   end
 end
-
-a = PolyTreeNode.new("A")
-b = PolyTreeNode.new("B")
-c = PolyTreeNode.new("C")
-d = PolyTreeNode.new("D")
-e = PolyTreeNode.new("E")
-
-b.parent = a
-c.parent = a
-d.parent = b
-e.parent = b
-p a.dfs("E")
